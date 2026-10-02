@@ -210,8 +210,14 @@ final class WorldReset {
                 if (!path.startsWith(container) || path.equals(container) || !Files.exists(path)) {
                     continue;
                 }
+                boolean directory = Files.isDirectory(path);
                 delete(path);
                 deleted++;
+                // The server does not recreate every data folder on its own, 26.x never saves players without it
+                if (directory) {
+                    Files.createDirectories(path.getFileName().toString().equals("players")
+                            ? path.resolve("data") : path);
+                }
             } catch (IOException e) {
                 plugin.getLogger().warning("Could not delete " + raw + ": " + e.getMessage());
             }
