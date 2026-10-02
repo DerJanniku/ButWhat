@@ -1,0 +1,18 @@
+name: ButWhat
+version: ${version}
+main: de.derjannik.butwhat.ButWhat
+api-version: "1.21"
+authors: [DerJannik]
+website: https://de.fiverr.com/s/xXgY29x
+description: Minecraft, but... 24 challenge twists in one plugin, toggled and combined in a GUI
+
+commands:
+  butwhat:
+    description: Open the twist menu and manage challenges
+    usage: /butwhat [list|enable|disable|roulette|off|reload|info]
+    aliases: [bw, twist, twists]
+
+permissions:
+  butwhat.admin:
+    description: Toggle twists and manage the roulette
+    default: op

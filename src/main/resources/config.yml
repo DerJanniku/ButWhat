@@ -1,0 +1,90 @@
+# ButWhat by DerJannik
+# Need a custom plugin? https://de.fiverr.com/s/xXgY29x
+
+# Twists that are active, managed by the menu
+enabled: []
+
+# Seed for the scrambled drops and recipes, 0 generates a new one on first start
+seed: 0
+
+# Creative and spectator players are left alone by twists
+ignore-creative: true
+
+roulette:
+  # Swaps the active twists every few minutes, perfect for videos and events
+  minutes: 5
+  # How many random twists run at the same time
+  count: 2
+
+# Items that can never come out of random drops, a * matches any part of the name
+random-item-blacklist:
+  - "*COMMAND_BLOCK*"
+  - "*SPAWN_EGG*"
+  - "*STRUCTURE*"
+  - "JIGSAW"
+  - "BARRIER"
+  - "BEDROCK"
+  - "LIGHT"
+  - "DEBUG_STICK"
+  - "KNOWLEDGE_BOOK"
+  - "END_PORTAL_FRAME"
+  - "SPAWNER"
+  - "TRIAL_SPAWNER"
+  - "VAULT"
+  - "REINFORCED_DEEPSLATE"
+
+twists:
+  explosive-mining:
+    chance-percent: 15
+    power: 2.5
+  jump-stack:
+    jumps-per-level: 5
+    max-level: 20
+  blink:
+    distance: 8
+  floor-is-lava:
+    magma-after-ticks: 40
+    lava-after-ticks: 80
+  mob-multiplier:
+    copies: 2
+    nearby-limit: 40
+  item-rain:
+    seconds: 30
+  gravity-flip:
+    seconds: 60
+    float-seconds: 5
+  speed-ramp:
+    seconds: 60
+    max-level: 10
+  one-heart:
+    hearts: 1
+  jump-hurts:
+    damage: 2
+  explosive-arrows:
+    power: 2.0
+  deadly-water:
+    damage: 2
+  random-teleport:
+    seconds: 120
+    radius: 50
+  xp-lottery:
+    effect-seconds: 30
+  everything-falls:
+    height: 12
+  inventory-shuffle:
+    seconds: 20
+  exploding-mobs:
+    power: 2.0
+
+messages:
+  prefix: "&d&lButWhat &8» &7"
+  enabled: "&a{twist} &7is now &aactive&7."
+  disabled: "&c{twist} &7was &cdisabled&7."
+  all-disabled: "All twists disabled."
+  unknown: "&cUnknown twist. Use /butwhat list."
+  roulette-on: "Roulette started, new twists every &f{minutes} &7minutes."
+  roulette-off: "Roulette stopped."
+  roulette-title: "&d&lMinecraft, but..."
+  roulette-bar: "&dNext twist in &f{time}"
+  reloaded: "&aConfiguration reloaded."
+  no-permission: "&cYou do not have permission to do that."
