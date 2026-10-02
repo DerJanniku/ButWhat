@@ -21,6 +21,7 @@ final class TwistMenu implements Listener {
 
     private static final int SIZE = 54;
     private static final int SLOT_DISABLE_ALL = 45;
+    private static final int SLOT_RESET = 47;
     private static final int SLOT_ROULETTE = 49;
     private static final int SLOT_SPIN = 53;
 
@@ -57,6 +58,8 @@ final class TwistMenu implements Listener {
         }
         inventory.setItem(SLOT_DISABLE_ALL, item(Material.BARRIER, "§c§lDisable all", false,
                 "§7Stops every twist at once"));
+        inventory.setItem(SLOT_RESET, item(Material.GRASS_BLOCK, "§4§lWorld Reset", false,
+                "§7Fresh world, new seed, Nether, End:", "§7pick exactly what gets reset"));
         boolean roulette = plugin.twists().rouletteRunning();
         inventory.setItem(SLOT_ROULETTE, item(Material.CLOCK, "§d§lRoulette", roulette,
                 "§7Swaps the twists every " + plugin.getConfig().getInt("roulette.minutes", 5) + " minutes", "",
@@ -65,7 +68,7 @@ final class TwistMenu implements Listener {
                 "§7Picks random twists right now"));
     }
 
-    private ItemStack item(Material material, String name, boolean glint, String... lore) {
+    static ItemStack item(Material material, String name, boolean glint, String... lore) {
         ItemStack stack = new ItemStack(material);
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(name);
@@ -96,6 +99,10 @@ final class TwistMenu implements Listener {
             plugin.twists().stopRoulette();
             plugin.twists().disableAll();
             plugin.broadcast("all-disabled");
+        } else if (slot == SLOT_RESET) {
+            // Opening another menu inside the click event gets dropped
+            Bukkit.getScheduler().runTask(plugin, () -> plugin.resetMenu().open(player));
+            return;
         } else if (slot == SLOT_ROULETTE) {
             if (plugin.twists().rouletteRunning()) {
                 plugin.twists().stopRoulette();

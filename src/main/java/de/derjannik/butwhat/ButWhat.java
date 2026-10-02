@@ -13,23 +13,34 @@ import java.util.List;
 public class ButWhat extends JavaPlugin {
 
     private static final List<String> SUBCOMMANDS = List.of("menu", "list", "enable", "disable", "roulette", "spin",
-            "off", "reload", "info");
+            "off", "reset", "reload", "info");
 
     private final Pools pools = new Pools();
     private TwistManager twists;
     private TwistMenu menu;
+    private ResetMenu resetMenu;
+
+    @Override
+    public void onLoad() {
+        WorldReset.applyPending(this);
+    }
 
     @Override
     public void onEnable() {
         Banner.print(this);
         saveDefaultConfig();
+        // Add keys from newer versions to an existing config
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         pools.load(this);
         this.twists = new TwistManager(this);
         this.menu = new TwistMenu(this);
+        this.resetMenu = new ResetMenu(this);
 
         // Register listeners
         Bukkit.getPluginManager().registerEvents(twists, this);
         Bukkit.getPluginManager().registerEvents(menu, this);
+        Bukkit.getPluginManager().registerEvents(resetMenu, this);
 
         twists.loadEnabled();
         getLogger().info(twists.all().size() + " twists loaded.");
@@ -96,6 +107,23 @@ public class ButWhat extends JavaPlugin {
                 twists.disableAll();
                 broadcast("all-disabled");
             }
+            case "reset" -> {
+                if (args.length > 1 && args[1].equalsIgnoreCase("confirm")) {
+                    List<String> parts = List.of(args).subList(2, args.length);
+                    WorldReset.Options options = new WorldReset.Options(parts.contains("overworld"),
+                            parts.contains("nether"), parts.contains("end"), parts.contains("seed"),
+                            parts.contains("players"));
+                    if (!options.any()) {
+                        sender.sendMessage("Usage: /butwhat reset confirm <overworld|nether|end|seed|players>...");
+                        return true;
+                    }
+                    reset(options);
+                } else if (sender instanceof Player player) {
+                    resetMenu.open(player);
+                } else {
+                    sender.sendMessage("Usage: /butwhat reset confirm <overworld|nether|end|seed|players>...");
+                }
+            }
             case "reload" -> {
                 reloadConfig();
                 pools.load(this);
@@ -105,7 +133,7 @@ public class ButWhat extends JavaPlugin {
                 if (sender instanceof Player player) {
                     menu.open(player);
                 } else {
-                    sender.sendMessage("Usage: /butwhat <list|enable|disable|roulette|spin|off|reload|info>");
+                    sender.sendMessage("Usage: /butwhat <list|enable|disable|roulette|spin|off|reset|reload|info>");
                 }
             }
         }
@@ -121,6 +149,13 @@ public class ButWhat extends JavaPlugin {
                     out.add(option);
                 }
             }
+        } else if (args.length >= 2 && args[0].equalsIgnoreCase("reset")) {
+            for (String option : args.length == 2 ? List.of("confirm")
+                    : List.of("overworld", "nether", "end", "seed", "players")) {
+                if (option.startsWith(args[args.length - 1].toLowerCase())) {
+                    out.add(option);
+                }
+            }
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("enable") || args[0].equalsIgnoreCase("disable"))) {
             for (Twist twist : twists.all()) {
                 if (twist.id().startsWith(args[1].toLowerCase())) {
@@ -129,6 +164,12 @@ public class ButWhat extends JavaPlugin {
             }
         }
         return out;
+    }
+
+    void reset(WorldReset.Options options) {
+        twists.stopRoulette();
+        broadcast("reset-broadcast");
+        WorldReset.request(this, options);
     }
 
     void announce(Twist twist) {
@@ -153,6 +194,14 @@ public class ButWhat extends JavaPlugin {
 
     Pools pools() {
         return pools;
+    }
+
+    TwistMenu menu() {
+        return menu;
+    }
+
+    ResetMenu resetMenu() {
+        return resetMenu;
     }
 
     TwistManager twists() {

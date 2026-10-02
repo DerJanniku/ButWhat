@@ -86,5 +86,7 @@ messages:
   roulette-off: "Roulette stopped."
   roulette-title: "&d&lMinecraft, but..."
   roulette-bar: "&dNext twist in &f{time}"
+  reset-broadcast: "&cThe world is being reset, the server restarts now."
+  reset-kick: "&d&lButWhat\n\n&7The world is being reset.\n&fRejoin in a moment!"
   reloaded: "&aConfiguration reloaded."
   no-permission: "&cYou do not have permission to do that."

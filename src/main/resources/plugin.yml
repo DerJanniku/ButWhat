@@ -9,7 +9,7 @@ description: Minecraft, but... 24 challenge twists in one plugin, toggled and co
 commands:
   butwhat:
     description: Open the twist menu and manage challenges
-    usage: /butwhat [list|enable|disable|roulette|off|reload|info]
+    usage: /butwhat [list|enable|disable|roulette|spin|off|reset|reload|info]
     aliases: [bw, twist, twists]
 
 permissions:
