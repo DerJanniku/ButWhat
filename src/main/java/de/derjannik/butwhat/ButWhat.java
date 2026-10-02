@@ -60,7 +60,6 @@ public class ButWhat extends JavaPlugin {
         if (sub.equals("info")) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "ButWhat " + ChatColor.GRAY + "v" + getDescription().getVersion()
                     + " by " + ChatColor.YELLOW + "DerJannik");
-            sender.sendMessage(ChatColor.GRAY + "Custom plugins: " + ChatColor.AQUA + Banner.FIVERR);
             return true;
         }
         if (!sender.hasPermission("butwhat.admin")) {

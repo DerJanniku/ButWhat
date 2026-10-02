@@ -3,7 +3,6 @@ version: ${version}
 main: de.derjannik.butwhat.ButWhat
 api-version: "1.21"
 authors: [DerJannik]
-website: https://de.fiverr.com/s/xXgY29x
 description: Minecraft, but... 24 challenge twists in one plugin, toggled and combined in a GUI
 
 commands:
