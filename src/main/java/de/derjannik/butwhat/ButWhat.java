@@ -32,6 +32,7 @@ public class ButWhat extends JavaPlugin {
         // Add keys from newer versions to an existing config
         getConfig().options().copyDefaults(true);
         saveConfig();
+        reloadConfig();
         pools.load(this);
         this.twists = new TwistManager(this);
         this.menu = new TwistMenu(this);
